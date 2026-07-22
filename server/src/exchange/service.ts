@@ -1,10 +1,6 @@
-import {
-  ExchangeClient
-} from "./client.js";
-
-import {
-  createExchangeAdapter
-} from "./factory.js";
+import type {
+  ExchangeAdapter
+} from "./adapter.js";
 
 import type {
   Balance,
@@ -13,36 +9,53 @@ import type {
   Ticker
 } from "./types.js";
 
-
-const client =
-  new ExchangeClient(
-    createExchangeAdapter()
-  );
+import {
+  MockExchangeAdapter
+} from "./adapter.js";
 
 
-export async function getTicker(
-  symbol: string
-): Promise<Ticker> {
+export class ExchangeService {
 
-  return client.getTicker(symbol);
+  constructor(
+    private readonly adapter: ExchangeAdapter =
+      new MockExchangeAdapter()
+  ) {}
+
+
+  getInfo() {
+    return this.adapter.getInfo();
+  }
+
+
+  async getTicker(
+    symbol: string
+  ): Promise<Ticker> {
+
+    return this.adapter.getTicker(symbol);
+
+  }
+
+
+  async getBalances():
+    Promise<Balance[]> {
+
+    return this.adapter.getBalances();
+
+  }
+
+
+  async createOrder(
+    request: OrderRequest
+  ): Promise<OrderResult> {
+
+    return this.adapter.createOrder(
+      request
+    );
+
+  }
+
 }
 
 
-export async function getBalances(): Promise<Balance[]> {
-
-  return client.getBalances();
-}
-
-
-export async function createOrder(
-  request: OrderRequest
-): Promise<OrderResult> {
-
-  return client.createOrder(request);
-}
-
-
-export function getExchangeInfo() {
-
-  return client.getInfo();
-}
+export const exchangeService =
+  new ExchangeService();
