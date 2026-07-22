@@ -1,27 +1,35 @@
 export interface ServerConfig {
   host: string;
   port: number;
-  environment: "development" | "production" | "test";
-}
-
-export interface ExchangeConfig {
-  apiKey: string;
-  apiSecret: string;
-  baseUrl: string;
-  testnet: boolean;
+  env: "development" | "production" | "test";
 }
 
 export interface DatabaseConfig {
   path: string;
+  backupPath: string;
+}
+
+export interface ExchangeConfig {
+  provider: string;
+  testnet: boolean;
+  apiKey: string;
+  apiSecret: string;
 }
 
 export interface LoggingConfig {
   level: "trace" | "debug" | "info" | "warn" | "error" | "fatal";
+  directory: string;
 }
 
-export interface AppConfig {
+export interface Config {
   server: ServerConfig;
-  exchange: ExchangeConfig;
   database: DatabaseConfig;
+  exchange: ExchangeConfig;
   logging: LoggingConfig;
 }
+
+/*
+ * Backward compatibility.
+ * Existing files currently import AppConfig.
+ */
+export type AppConfig = Config;

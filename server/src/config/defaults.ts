@@ -4,21 +4,23 @@ export const DEFAULT_CONFIG: AppConfig = {
   server: {
     host: "0.0.0.0",
     port: 3000,
-    environment: "development"
-  },
-
-  exchange: {
-    apiKey: "",
-    apiSecret: "",
-    baseUrl: "https://api.binance.com",
-    testnet: false
+    env: "development"
   },
 
   database: {
-    path: "./data/database/autotrader.db"
+    path: "./data/database/autotrader.db",
+    backupPath: "./data/backups"
+  },
+
+  exchange: {
+    provider: "binance",
+    testnet: false,
+    apiKey: "",
+    apiSecret: ""
   },
 
   logging: {
-    level: "info"
+    level: "info",
+    directory: "./data/logs"
   }
 };

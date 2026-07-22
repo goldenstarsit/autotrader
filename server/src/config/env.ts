@@ -1,55 +1,34 @@
-export function getEnv(name: string, defaultValue = ""): string {
-  const value = process.env[name];
-
-  if (value === undefined || value.trim() === "") {
-    return defaultValue;
-  }
-
-  return value.trim();
-}
-
-export function getRequiredEnv(name: string): string {
-  const value = process.env[name];
-
-  if (value === undefined || value.trim() === "") {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
-
-  return value.trim();
+export function getEnv(
+  key: string,
+  fallback: string
+): string {
+  return process.env[key] ?? fallback;
 }
 
 export function getNumberEnv(
-  name: string,
-  defaultValue: number
+  key: string,
+  fallback: number
 ): number {
-  const value = process.env[name];
+  const value = process.env[key];
 
-  if (value === undefined || value.trim() === "") {
-    return defaultValue;
+  if (!value) {
+    return fallback;
   }
 
   const parsed = Number(value);
 
-  if (Number.isNaN(parsed)) {
-    throw new Error(
-      `Environment variable ${name} must be a valid number.`
-    );
-  }
-
-  return parsed;
+  return Number.isNaN(parsed) ? fallback : parsed;
 }
 
 export function getBooleanEnv(
-  name: string,
-  defaultValue: boolean
+  key: string,
+  fallback: boolean
 ): boolean {
-  const value = process.env[name];
+  const value = process.env[key];
 
-  if (value === undefined || value.trim() === "") {
-    return defaultValue;
+  if (!value) {
+    return fallback;
   }
 
-  return ["true", "1", "yes", "on"].includes(
-    value.trim().toLowerCase()
-  );
+  return value.toLowerCase() === "true";
 }
