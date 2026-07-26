@@ -3,35 +3,25 @@ export type RiskLevel =
   | "MEDIUM"
   | "HIGH";
 
-
-export interface RiskRule {
-
-  name: string;
-
-  enabled: boolean;
-
-  limit: number;
-
+export interface RiskState {
+  level: RiskLevel;
+  updatedAt: string;
 }
-
 
 export interface Exposure {
-
   symbol: string;
-
   quantity: number;
-
   value: number;
-
 }
 
+export interface RiskRule {
+  name: string;
+  enabled: boolean;
+  limit: number;
+}
 
-export interface RiskState {
-
-  rules: RiskRule[];
-
+export interface RiskStoreState {
+  state: RiskState;
   exposures: Exposure[];
-
-  level: RiskLevel;
-
+  rules: RiskRule[];
 }

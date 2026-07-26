@@ -1,53 +1,35 @@
 import type {
-  RiskState
+  RiskState,
+  RiskStoreState
 } from "./types.js";
 
+const store: RiskStoreState = {
+  state: {
+    level: "LOW",
+    updatedAt: new Date().toISOString()
+  },
+  exposures: [],
+  rules: []
+};
 
-class RiskStore {
+export const riskStore = {
+  get(): RiskStoreState {
+    return store;
+  },
 
-  private state: RiskState = {
-
-    rules: [],
-
-    exposures: [],
-
-    level: "LOW"
-
-  };
-
-
-  get(): RiskState {
-
-    return this.state;
-
+  update(value: RiskStoreState): void {
+    store.state = value.state;
+    store.exposures = value.exposures;
+    store.rules = value.rules;
   }
+};
 
-
-  update(
-    state: RiskState
-  ): void {
-
-    this.state = state;
-
-  }
-
-
-  reset(): void {
-
-    this.state = {
-
-      rules: [],
-
-      exposures: [],
-
-      level: "LOW"
-
-    };
-
-  }
-
+export function getRiskState(): RiskState {
+  return riskStore.get().state;
 }
 
-
-export const riskStore =
-  new RiskStore();
+export function setRiskState(
+  value: RiskState
+): void {
+  riskStore.get().state = value;
+}
