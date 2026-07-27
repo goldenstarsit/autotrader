@@ -2,56 +2,40 @@ import type {
   PortfolioState
 } from "./types.js";
 
+const state: PortfolioState = {
 
-class PortfolioStore {
+  balances: [],
 
-  private state: PortfolioState = {
+  positions: []
 
-    balances: [],
+};
 
-    positions: [],
-
-    updatedAt:
-      new Date().toISOString()
-  };
-
+export const portfolioStore = {
 
   get(): PortfolioState {
 
-    return this.state;
+    return state;
 
-  }
-
+  },
 
   update(
-    state: PortfolioState
+    value: PortfolioState
   ): void {
 
-    this.state = {
-      ...state,
-      updatedAt:
-        new Date().toISOString()
-    };
+    state.balances =
+      value.balances;
 
-  }
+    state.positions =
+      value.positions;
 
+  },
 
   reset(): void {
 
-    this.state = {
+    state.balances = [];
 
-      balances: [],
-
-      positions: [],
-
-      updatedAt:
-        new Date().toISOString()
-    };
+    state.positions = [];
 
   }
 
-}
-
-
-export const portfolioStore =
-  new PortfolioStore();
+};

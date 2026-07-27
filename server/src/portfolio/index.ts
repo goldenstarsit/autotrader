@@ -4,3 +4,6 @@ export * from "./balance.js";
 export * from "./position.js";
 export * from "./valuation.js";
 export * from "./service.js";
+export * from "./workflow.js";
+export * from "./integration.js";
+export * from "./validation.js";

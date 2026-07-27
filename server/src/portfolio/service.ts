@@ -4,66 +4,131 @@ import type {
   PortfolioState
 } from "./types.js";
 
-
 import {
   portfolioStore
 } from "./state.js";
 
-
 import {
-  setBalance
+  setBalance,
+  getBalance
 } from "./balance.js";
-
 
 import {
   addPosition,
-  removePosition
+  removePosition,
+  getPosition,
+  getPositions
 } from "./position.js";
 
+import {
+  calculateValue,
+  getPositionValue,
+  type AssetPrice
+} from "./valuation.js";
 
-export function getPortfolio():
-  PortfolioState {
 
-  return portfolioStore.get();
+export class PortfolioService {
+
+  state(): PortfolioState {
+
+    return portfolioStore.get();
+
+  }
+
+
+  balance(
+    asset: string
+  ): AssetBalance | null {
+
+    return getBalance(asset);
+
+  }
+
+
+  updateBalance(
+    balance: AssetBalance
+  ): void {
+
+    setBalance(balance);
+
+  }
+
+
+  position(
+    symbol: string
+  ): Position | null {
+
+    return getPosition(symbol);
+
+  }
+
+
+  positions(): Position[] {
+
+    return getPositions();
+
+  }
+
+
+  openPosition(
+    position: Position
+  ): void {
+
+    addPosition(position);
+
+  }
+
+
+  closePosition(
+    symbol: string
+  ): void {
+
+    removePosition(symbol);
+
+  }
+
+
+  portfolioValue(
+    prices: AssetPrice[]
+  ): number {
+
+    return calculateValue(prices);
+
+  }
+
+
+  positionValue(
+    symbol: string,
+    price: number
+  ): number {
+
+    return getPositionValue(
+      symbol,
+      price
+    );
+
+  }
+
+
+  reset(): void {
+
+    portfolioStore.reset();
+
+  }
 
 }
+
+
+export const portfolioService =
+  new PortfolioService();
 
 
 export function updateAssetBalance(
   balance: AssetBalance
 ): void {
 
-  setBalance(
+  portfolioService.updateBalance(
     balance
   );
-
-}
-
-
-export function openPosition(
-  position: Position
-): void {
-
-  addPosition(
-    position
-  );
-
-}
-
-
-export function closePosition(
-  symbol: string
-): void {
-
-  removePosition(
-    symbol
-  );
-
-}
-
-
-export function resetPortfolio(): void {
-
-  portfolioStore.reset();
 
 }
