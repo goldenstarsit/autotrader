@@ -2,15 +2,13 @@ export type OrderSide =
   | "BUY"
   | "SELL";
 
-
 export type OrderStatus =
   | "PENDING"
   | "OPEN"
   | "FILLED"
-  | "PARTIALLY_FILLED"
   | "CANCELLED"
-  | "FAILED";
-
+  | "FAILED"
+  | "REJECTED";
 
 export interface Order {
 
@@ -29,4 +27,11 @@ export interface Order {
   createdAt: string;
 
   updatedAt: string;
+
+}
+
+export interface OrderState {
+
+  orders: Order[];
+
 }

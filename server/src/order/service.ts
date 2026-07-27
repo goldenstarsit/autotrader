@@ -3,88 +3,103 @@ import type {
   OrderSide
 } from "./types.js";
 
+import {
+  createOrder,
+  getOrder,
+  getOrders
+} from "./repository.js";
 
 import {
-  orderStore
-} from "./state.js";
+  executeOrder
+} from "./executor.js";
+
+import {
+  updateOrderStatus,
+  getOpenOrders,
+  isOrderComplete
+} from "./tracker.js";
 
 
-function generateId(): string {
+export class OrderService {
 
-  return (
-    crypto.randomUUID()
-  );
+  create(
+    symbol: string,
+    side: OrderSide,
+    quantity: number,
+    price?: number
+  ): Order {
+
+    return createOrder(
+      symbol,
+      side,
+      quantity,
+      price
+    );
+
+  }
+
+
+  execute(
+    order: Order
+  ) {
+
+    return executeOrder(
+      order
+    );
+
+  }
+
+
+  order(
+    id: string
+  ): Order | null {
+
+    return getOrder(
+      id
+    );
+
+  }
+
+
+  orders(): Order[] {
+
+    return getOrders();
+
+  }
+
+
+  openOrders(): Order[] {
+
+    return getOpenOrders();
+
+  }
+
+
+  updateStatus(
+    id: string,
+    status: Order["status"]
+  ) {
+
+    return updateOrderStatus(
+      id,
+      status
+    );
+
+  }
+
+
+  completed(
+    order: Order
+  ): boolean {
+
+    return isOrderComplete(
+      order
+    );
+
+  }
 
 }
 
 
-export function createOrder(
-  symbol: string,
-  side: OrderSide,
-  quantity: number,
-  price?: number
-): Order {
-
-  const now =
-    new Date()
-      .toISOString();
-
-
-  const order: Order = {
-
-    id: generateId(),
-
-    symbol,
-
-    side,
-
-    quantity,
-
-    ...(price !== undefined
-      ? { price }
-      : {}),
-
-    status: "PENDING",
-
-    createdAt: now,
-
-    updatedAt: now
-  };
-
-
-  orderStore.add(
-    order
-  );
-
-
-  return order;
-}
-
-
-export function getOrders(): Order[] {
-
-  return (
-    orderStore
-      .get()
-      .orders
-  );
-
-}
-
-
-export function getOrder(
-  id: string
-): Order | null {
-
-  return (
-    orderStore
-      .get()
-      .orders
-      .find(
-        order =>
-          order.id === id
-      )
-      ?? null
-  );
-
-}
+export const orderService =
+  new OrderService();

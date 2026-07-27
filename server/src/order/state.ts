@@ -1,68 +1,60 @@
 import type {
-  Order
+  Order,
+  OrderState
 } from "./types.js";
 
+const state: OrderState = {
 
-export interface OrderState {
+  orders: []
 
-  orders: Order[];
+};
 
-}
-
-
-class OrderStore {
-
-  private state: OrderState = {
-    orders: []
-  };
-
+export const orderStore = {
 
   get(): OrderState {
 
-    return this.state;
+    return state;
 
-  }
-
+  },
 
   add(
     order: Order
   ): void {
 
-    this.state.orders.push(
+    state.orders.push(
       order
     );
 
-  }
-
+  },
 
   update(
     order: Order
   ): void {
 
     const index =
-      this.state.orders.findIndex(
-        item =>
-          item.id === order.id
+      state.orders.findIndex(
+        item => item.id === order.id
       );
-
 
     if (index >= 0) {
 
-      this.state.orders[index] =
+      state.orders[index] =
         order;
 
     }
 
+  },
+
+  reset(): void {
+
+    state.orders = [];
+
   }
 
+};
 
-  clear(): void {
+export function getOrderState(): OrderState {
 
-    this.state.orders = [];
+  return orderStore.get();
 
-  }
 }
-
-
-export const orderStore =
-  new OrderStore();
